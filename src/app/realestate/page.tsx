@@ -4,7 +4,7 @@ import { useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
-import { Camera, Clapperboard, Drone, Sunset, Rocket, ArrowLeft, ArrowRight, Phone, Mail, ChevronLeft, ChevronRight } from "lucide-react";
+import { Camera, Clapperboard, Drone, Sunset, Rocket, Phone, Mail, ChevronLeft, ChevronRight } from "lucide-react";
 import LogoBar from "@/components/LogoBar";
 
 const services = [
@@ -116,10 +116,15 @@ export default function RealEstatePage() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           <a
             href="/"
-            className="flex items-center gap-2 text-sm text-muted transition-colors hover:text-foreground"
+            className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
-            <ArrowLeft size={16} />
-            Home
+            <Image
+              src="/DKMLogoSquare.svg"
+              alt="Daniel King Media"
+              width={36}
+              height={36}
+            />
+            <span className="text-lg font-semibold tracking-tight">Daniel King Media</span>
           </a>
           <a
             href="#book"
