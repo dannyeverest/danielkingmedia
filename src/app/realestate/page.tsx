@@ -374,25 +374,25 @@ export default function RealEstatePage() {
                 <input
                   type="text"
                   placeholder="Name"
-                  className="w-full border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-foreground"
+                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                   required
                 />
                 <input
                   type="email"
                   placeholder="Email"
-                  className="w-full border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-foreground"
+                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                   required
                 />
               </div>
               <input
                 type="text"
                 placeholder="Property Address"
-                className="w-full border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-foreground"
+                className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
               />
               <textarea
                 placeholder="Tell me about the property and what you need..."
                 rows={4}
-                className="w-full resize-none border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-foreground"
+                className="w-full resize-none border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
               />
               <button
                 type="submit"

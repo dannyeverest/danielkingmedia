@@ -29,7 +29,7 @@ export default function Contact() {
               <input
                 type="text"
                 placeholder="Name"
-                className="w-full border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-foreground"
+                className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                 required
               />
             </div>
@@ -37,7 +37,7 @@ export default function Contact() {
               <input
                 type="email"
                 placeholder="Email"
-                className="w-full border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-foreground"
+                className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                 required
               />
             </div>
@@ -45,7 +45,7 @@ export default function Contact() {
               <textarea
                 placeholder="Tell me about your project..."
                 rows={5}
-                className="w-full resize-none border border-border bg-transparent px-4 py-3 text-sm outline-none transition-colors focus:border-foreground"
+                className="w-full resize-none border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                 required
               />
             </div>
