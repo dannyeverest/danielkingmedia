@@ -6,9 +6,16 @@ const ALLOWED_ORIGINS = [
   "http://localhost:3000",
 ];
 
+function isAllowedOrigin(origin: string) {
+  return (
+    ALLOWED_ORIGINS.includes(origin) ||
+    origin.endsWith(".vercel.app")
+  );
+}
+
 export async function POST(req: NextRequest) {
   const origin = req.headers.get("origin") ?? "";
-  if (!ALLOWED_ORIGINS.includes(origin)) {
+  if (!isAllowedOrigin(origin)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
