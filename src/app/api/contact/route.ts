@@ -3,20 +3,28 @@ import { NextRequest, NextResponse } from "next/server";
 const ALLOWED_ORIGINS = [
   "https://danielkingmedia.com",
   "https://www.danielkingmedia.com",
+  "https://danielkingmedia.vercel.app",
   "http://localhost:3000",
 ];
 
-function isAllowedOrigin(origin: string) {
-  return (
-    ALLOWED_ORIGINS.includes(origin) ||
-    origin.endsWith(".vercel.app")
-  );
+const MAX_FIELD_LENGTH = 2000;
+
+function sanitize(value: unknown): string {
+  if (typeof value !== "string") return "";
+  return value
+    .slice(0, MAX_FIELD_LENGTH)
+    .replace(/[<>]/g, "");
 }
 
 export async function POST(req: NextRequest) {
   const origin = req.headers.get("origin") ?? "";
-  if (!isAllowedOrigin(origin)) {
+  if (!ALLOWED_ORIGINS.includes(origin)) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const contentLength = req.headers.get("content-length");
+  if (contentLength && parseInt(contentLength, 10) > 10_000) {
+    return NextResponse.json({ error: "Payload too large" }, { status: 413 });
   }
 
   let body: Record<string, unknown>;
@@ -32,13 +40,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: true });
   }
 
-  const { name, email, message, source, propertyAddress } = body as {
-    name?: string;
-    email?: string;
-    message?: string;
-    source?: string;
-    propertyAddress?: string;
-  };
+  const name = sanitize(body.name);
+  const email = sanitize(body.email);
+  const message = sanitize(body.message);
+  const source = sanitize(body.source);
+  const propertyAddress = sanitize(body.propertyAddress);
 
   if (!name || !email || !message || !source) {
     return NextResponse.json(
