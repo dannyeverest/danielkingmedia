@@ -91,6 +91,7 @@ export default function RealEstatePage() {
 
   // Contact form state
   const [formName, setFormName] = useState("");
+  const [formPhone, setFormPhone] = useState("");
   const [formEmail, setFormEmail] = useState("");
   const [formAddress, setFormAddress] = useState("");
   const [formMessage, setFormMessage] = useState("");
@@ -107,6 +108,7 @@ export default function RealEstatePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: formName,
+          phone: formPhone,
           email: formEmail,
           message: formMessage,
           propertyAddress: formAddress,
@@ -118,6 +120,7 @@ export default function RealEstatePage() {
       if (!res.ok) throw new Error();
       setFormStatus("success");
       setFormName("");
+      setFormPhone("");
       setFormEmail("");
       setFormAddress("");
       setFormMessage("");
@@ -430,14 +433,21 @@ export default function RealEstatePage() {
                     onChange={(e) => setFormName(e.target.value)}
                   />
                   <input
-                    type="email"
-                    placeholder="Email"
+                    type="tel"
+                    placeholder="Phone"
                     className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                     required
-                    value={formEmail}
-                    onChange={(e) => setFormEmail(e.target.value)}
+                    value={formPhone}
+                    onChange={(e) => setFormPhone(e.target.value)}
                   />
                 </div>
+                <input
+                  type="email"
+                  placeholder="Email (optional)"
+                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
+                  value={formEmail}
+                  onChange={(e) => setFormEmail(e.target.value)}
+                />
                 <input
                   type="text"
                   placeholder="Property Address"

@@ -6,6 +6,7 @@ import SectionWrapper from "./SectionWrapper";
 
 export default function Contact() {
   const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [website, setWebsite] = useState(""); // honeypot
@@ -19,12 +20,13 @@ export default function Contact() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message, website, source: "homepage" }),
+        body: JSON.stringify({ name, phone, email, message, website, source: "homepage" }),
       });
 
       if (!res.ok) throw new Error();
       setStatus("success");
       setName("");
+      setPhone("");
       setEmail("");
       setMessage("");
     } catch {
@@ -78,10 +80,19 @@ export default function Contact() {
               </div>
               <div>
                 <input
-                  type="email"
-                  placeholder="Email"
+                  type="tel"
+                  placeholder="Phone"
                   className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                   required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email (optional)"
+                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />

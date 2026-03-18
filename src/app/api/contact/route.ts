@@ -41,14 +41,15 @@ export async function POST(req: NextRequest) {
   }
 
   const name = sanitize(body.name);
+  const phone = sanitize(body.phone);
   const email = sanitize(body.email);
   const message = sanitize(body.message);
   const source = sanitize(body.source);
   const propertyAddress = sanitize(body.propertyAddress);
 
-  if (!name || !email || !message || !source) {
+  if (!name || !phone || !message || !source) {
     return NextResponse.json(
-      { error: "Missing required fields: name, email, message, source" },
+      { error: "Missing required fields: name, phone, message, source" },
       { status: 400 },
     );
   }
@@ -71,7 +72,7 @@ export async function POST(req: NextRequest) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${webhookToken}`,
       },
-      body: JSON.stringify({ name, email, message, source, propertyAddress }),
+      body: JSON.stringify({ name, phone, email, message, source, propertyAddress }),
     });
 
     if (!res.ok) {
