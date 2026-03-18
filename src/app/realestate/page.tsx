@@ -179,10 +179,10 @@ export default function RealEstatePage() {
           muted
           loop
           playsInline
-          poster="/video-poster.png"
+          poster="/realestate-hero-poster.jpg"
           className="absolute inset-0 h-full w-full object-cover"
         >
-          <source src="/testimonial-video.mp4" type="video/mp4" />
+          <source src="/realestate-hero-web.mp4" type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-black/50" />
 
