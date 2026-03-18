@@ -89,6 +89,43 @@ export default function RealEstatePage() {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
+  // Contact form state
+  const [formName, setFormName] = useState("");
+  const [formEmail, setFormEmail] = useState("");
+  const [formAddress, setFormAddress] = useState("");
+  const [formMessage, setFormMessage] = useState("");
+  const [formWebsite, setFormWebsite] = useState(""); // honeypot
+  const [formStatus, setFormStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  async function handleFormSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setFormStatus("loading");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formName,
+          email: formEmail,
+          message: formMessage,
+          propertyAddress: formAddress,
+          website: formWebsite,
+          source: "realestate",
+        }),
+      });
+
+      if (!res.ok) throw new Error();
+      setFormStatus("success");
+      setFormName("");
+      setFormEmail("");
+      setFormAddress("");
+      setFormMessage("");
+    } catch {
+      setFormStatus("error");
+    }
+  }
+
   const updateScrollButtons = useCallback(() => {
     if (!carouselRef.current) return;
     const el = carouselRef.current;
@@ -364,43 +401,72 @@ export default function RealEstatePage() {
           </FadeIn>
 
           <FadeIn className="mt-14">
-            <form
-              className="space-y-5"
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              <div className="grid gap-5 sm:grid-cols-2">
+            {formStatus === "success" ? (
+              <div className="flex items-center justify-center py-12">
+                <p className="text-center text-lg">
+                  Thanks for reaching out! I&apos;ll get back to you soon.
+                </p>
+              </div>
+            ) : (
+              <form className="space-y-5" onSubmit={handleFormSubmit}>
+                {/* Honeypot — hidden from real users */}
+                <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
+                  <input
+                    type="text"
+                    name="website"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={formWebsite}
+                    onChange={(e) => setFormWebsite(e.target.value)}
+                  />
+                </div>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
+                    required
+                    value={formName}
+                    onChange={(e) => setFormName(e.target.value)}
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
+                    required
+                    value={formEmail}
+                    onChange={(e) => setFormEmail(e.target.value)}
+                  />
+                </div>
                 <input
                   type="text"
-                  placeholder="Name"
+                  placeholder="Property Address"
                   className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-                  required
+                  value={formAddress}
+                  onChange={(e) => setFormAddress(e.target.value)}
                 />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
+                <textarea
+                  placeholder="Tell me about the property and what you need..."
+                  rows={4}
+                  className="w-full resize-none border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
                   required
+                  value={formMessage}
+                  onChange={(e) => setFormMessage(e.target.value)}
                 />
-              </div>
-              <input
-                type="text"
-                placeholder="Property Address"
-                className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-              />
-              <textarea
-                placeholder="Tell me about the property and what you need..."
-                rows={4}
-                className="w-full resize-none border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-              />
-              <button
-                type="submit"
-                className="w-full bg-foreground px-8 py-3 text-sm tracking-widest uppercase text-white transition-opacity hover:opacity-80"
-              >
-                Request a Quote
-              </button>
-            </form>
+                {formStatus === "error" && (
+                  <p className="text-sm text-red-600">
+                    Something went wrong. Please try again or email me directly.
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={formStatus === "loading"}
+                  className="w-full bg-foreground px-8 py-3 text-sm tracking-widest uppercase text-white transition-opacity hover:opacity-80 disabled:opacity-50"
+                >
+                  {formStatus === "loading" ? "Sending..." : "Request a Quote"}
+                </button>
+              </form>
+            )}
           </FadeIn>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm text-muted">

@@ -1,9 +1,37 @@
 "use client";
 
+import { useState } from "react";
 import { Instagram, Facebook, Youtube, Phone, Mail } from "lucide-react";
 import SectionWrapper from "./SectionWrapper";
 
 export default function Contact() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [website, setWebsite] = useState(""); // honeypot
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("loading");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message, website, source: "homepage" }),
+      });
+
+      if (!res.ok) throw new Error();
+      setStatus("success");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch {
+      setStatus("error");
+    }
+  }
+
   return (
     <SectionWrapper
       id="contact"
@@ -19,43 +47,69 @@ export default function Contact() {
 
         <div className="mt-14 grid gap-12 md:grid-cols-2">
           {/* Contact form */}
-          <form
-            className="space-y-5"
-            onSubmit={(e) => {
-              e.preventDefault();
-            }}
-          >
-            <div>
-              <input
-                type="text"
-                placeholder="Name"
-                className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-                required
-              />
+          {status === "success" ? (
+            <div className="flex items-center justify-center">
+              <p className="text-center text-lg">
+                Thanks for reaching out! I&apos;ll get back to you soon.
+              </p>
             </div>
-            <div>
-              <input
-                type="email"
-                placeholder="Email"
-                className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-                required
-              />
-            </div>
-            <div>
-              <textarea
-                placeholder="Tell me about your project..."
-                rows={5}
-                className="w-full resize-none border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-foreground px-8 py-3 text-sm tracking-widest uppercase text-white transition-opacity hover:opacity-80"
-            >
-              Send Message
-            </button>
-          </form>
+          ) : (
+            <form className="space-y-5" onSubmit={handleSubmit}>
+              {/* Honeypot — hidden from real users */}
+              <div className="absolute -left-[9999px] opacity-0" aria-hidden="true">
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={website}
+                  onChange={(e) => setWebsite(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div>
+                <textarea
+                  placeholder="Tell me about your project..."
+                  rows={5}
+                  className="w-full resize-none border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
+                  required
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                />
+              </div>
+              {status === "error" && (
+                <p className="text-sm text-red-600">
+                  Something went wrong. Please try again or email me directly.
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full bg-foreground px-8 py-3 text-sm tracking-widest uppercase text-white transition-opacity hover:opacity-80 disabled:opacity-50"
+              >
+                {status === "loading" ? "Sending..." : "Send Message"}
+              </button>
+            </form>
+          )}
 
           {/* Contact info */}
           <div className="space-y-6">
