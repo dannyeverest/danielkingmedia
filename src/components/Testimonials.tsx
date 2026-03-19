@@ -9,7 +9,7 @@ const testimonials = [
       "So far, 30 leads for tree work in 4 days. Your video took the professionalism of our newsletter to a whole new level.",
     name: "Andrew Bachman",
     role: "Trout Brook Arborists",
-    image: "/portfolio/Bachman.jpeg",
+    image: "/Bachman.jpeg",
   },
   {
     quote:
