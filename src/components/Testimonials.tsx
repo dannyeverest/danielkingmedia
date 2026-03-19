@@ -15,8 +15,15 @@ const testimonials = [
     quote:
       "If there's some message you want to deliver to your clients and your audience, he's able to capture that. That's a skill worth millions. He's gifted.",
     name: "Sheryl Burke",
-    role: "S Burke Law",
+    role: "S. Burke Law",
     image: "/sheryl-burke.png",
+  },
+  {
+    quote:
+      "His professionalism is amazing, and he will do you right every single time. He made sure our photographs turned out absolutely perfect.",
+    name: "Melanie Root",
+    role: "Simply Irresistible Pets",
+    image: "/MelanieRoot.jpeg",
   },
 ];
 
@@ -53,11 +60,11 @@ export default function Testimonials() {
         </div>
 
         {/* Testimonial cards */}
-        <div className="mt-16 grid gap-8 md:grid-cols-2">
+        <div className="mt-16 grid gap-8 md:grid-cols-3">
           {testimonials.map((t) => (
             <div
               key={t.name}
-              className="bg-white p-8 md:p-10"
+              className="flex flex-col justify-between bg-white p-8 md:p-10"
             >
               <blockquote className="text-lg leading-relaxed text-foreground/80">
                 &ldquo;{t.quote}&rdquo;
