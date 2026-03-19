@@ -1,91 +1,83 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionWrapper from "./SectionWrapper";
 
-const categories = ["All", "Commercial", "Portraits", "Headshots", "Events", "Jewelry", "Landscapes"];
+const categories = ["All", "People", "Places", "Things", "Pets"];
 
 const images = [
-  // Commercial
-  { src: "/portfolio/Copy-of-WPP.jpg", category: "Commercial" },
-  { src: "/portfolio/Copy-of-IMG_7381-10.jpg", category: "Commercial" },
-  { src: "/portfolio/IMG_2696.jpg", category: "Commercial" },
-  { src: "/portfolio/Quickshots-2.jpg", category: "Commercial" },
-  { src: "/portfolio/VCACentral-6.jpg", category: "Commercial" },
-  // Portraits
-  { src: "/portfolio/DKM-Photos-2023-03.jpeg", category: "Portraits" },
-  { src: "/portfolio/DKM-Photos-2023-11.jpeg", category: "Portraits" },
-  { src: "/portfolio/DKM-Photos-2023-15.jpeg", category: "Portraits" },
-  { src: "/portfolio/DKM-Photos-2023-16.jpeg", category: "Portraits" },
-  { src: "/portfolio/DKM-Photos-2023-20.jpeg", category: "Portraits" },
-  { src: "/portfolio/DKM-Photos-2023-23.jpeg", category: "Portraits" },
-  { src: "/portfolio/DKM-Photos-2023-28.jpg", category: "Portraits" },
-  { src: "/portfolio/IMG_2648.jpg", category: "Portraits" },
-  { src: "/portfolio/IMG_3777.jpg", category: "Portraits" },
-  { src: "/portfolio/Haval-2.jpg", category: "Portraits" },
-  { src: "/portfolio/S&B-FInal-41.jpg", category: "Portraits" },
-  { src: "/portfolio/S&B-FInal-74.jpg", category: "Portraits" },
-  // Events
-  { src: "/portfolio/DK-ALI.jpg", category: "Events" },
-  { src: "/portfolio/DK-ALI-4.jpg", category: "Events" },
-  { src: "/portfolio/DK-ALI-8.jpg", category: "Events" },
-  { src: "/portfolio/DK-ALI-9162.jpg", category: "Events" },
-  { src: "/portfolio/DK-ALI-9201.jpg", category: "Events" },
-  { src: "/portfolio/DK-ALI-9537.jpg", category: "Events" },
-  { src: "/portfolio/DKM-Lockwood-6.jpg", category: "Events" },
-  { src: "/portfolio/DKM-Lockwood-6589.jpg", category: "Events" },
-  { src: "/portfolio/DKM-Lockwood-7233.jpg", category: "Events" },
-  { src: "/portfolio/DKM-Lockwood-7259.jpg", category: "Events" },
-  { src: "/portfolio/DKM-Lockwood-7882.jpg", category: "Events" },
-  { src: "/portfolio/DKM-Lockwood-8224edited.jpg", category: "Events" },
-  // Headshots
-  { src: "/portfolio/Vet-Headshot-1.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-2.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-3.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-4.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-5.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-6.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-7.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-8.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-9.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-10.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-11.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-12.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-13.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-14.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-15.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-16.jpg", category: "Headshots" },
-  { src: "/portfolio/Vet-Headshot-17.webp", category: "Headshots" },
-  // Jewelry
-  { src: "/portfolio/Moore-2.jpg", category: "Jewelry" },
-  { src: "/portfolio/Moore-3.jpg", category: "Jewelry" },
-  { src: "/portfolio/Moore-4.jpg", category: "Jewelry" },
-  { src: "/portfolio/Moore-5.jpg", category: "Jewelry" },
-  { src: "/portfolio/Moore-6.jpg", category: "Jewelry" },
-  { src: "/portfolio/Moore-24.jpg", category: "Jewelry" },
-  { src: "/portfolio/Moore-45.jpg", category: "Jewelry" },
-  // Landscapes
-  { src: "/portfolio/IMG_0778.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_0853.JPG", category: "Landscapes" },
-  { src: "/portfolio/IMG_3614.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_3712.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_4041.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_4174.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_4299.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_4346.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_4357.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_4364.jpg", category: "Landscapes" },
-  { src: "/portfolio/IMG_5223.JPG", category: "Landscapes" },
+  // People
+  { src: "/portfolio/people/barski-0194.jpg", category: "People" },
+  { src: "/portfolio/people/Copy-of-IMG_7381-10.jpg", category: "People" },
+  { src: "/portfolio/people/DK-ALI-9537.jpg", category: "People" },
+  { src: "/portfolio/people/DK-ALI.jpg", category: "People" },
+  { src: "/portfolio/people/DKM-Photos-2023-20.jpeg", category: "People" },
+  { src: "/portfolio/people/IMG_0778.jpg", category: "People" },
+  { src: "/portfolio/people/Photo-1090-2.jpg", category: "People" },
+  { src: "/portfolio/people/S&B-FInal-41.jpg", category: "People" },
+  { src: "/portfolio/people/Vet-Headshot-16.jpg", category: "People" },
+  { src: "/portfolio/people/Vet-Headshot-2.jpg", category: "People" },
+  { src: "/portfolio/people/Vet-Headshot-5.jpg", category: "People" },
+  { src: "/portfolio/people/Vet-Headshot-9.jpg", category: "People" },
+  // Places
+  { src: "/portfolio/places/AIS-38.jpg", category: "Places" },
+  { src: "/portfolio/places/AIS-44.jpg", category: "Places" },
+  { src: "/portfolio/places/DKM-Lockwood-0856.jpg", category: "Places" },
+  { src: "/portfolio/places/IMG_3614.jpg", category: "Places" },
+  { src: "/portfolio/places/IMG_4346.jpg", category: "Places" },
+  { src: "/portfolio/places/IMG_8786.JPG", category: "Places" },
+  { src: "/portfolio/places/P1111705.jpg", category: "Places" },
+  { src: "/portfolio/places/P1200782.JPG", category: "Places" },
+  { src: "/portfolio/places/proc-8.jpg", category: "Places" },
+  { src: "/portfolio/places/Quickshots-2.jpg", category: "Places" },
+  { src: "/portfolio/places/summitski-3106.jpg", category: "Places" },
+  { src: "/portfolio/places/Viewskis-2.jpg", category: "Places" },
+  // Things
+  { src: "/portfolio/things/Cruise-7682.JPG", category: "Things" },
+  { src: "/portfolio/things/Cruise-7885.JPG", category: "Things" },
+  { src: "/portfolio/things/DKM-Lockwood-7083.JPG", category: "Things" },
+  { src: "/portfolio/things/DKM-Lockwood-7141.jpg", category: "Things" },
+  { src: "/portfolio/things/DKM-Lockwood-8224.jpg", category: "Things" },
+  { src: "/portfolio/things/DKM-Lockwood-largerset-7003.jpg", category: "Things" },
+  { src: "/portfolio/things/Frwwzeski-2063.jpg", category: "Things" },
+  { src: "/portfolio/things/IMG_0844.JPG", category: "Things" },
+  { src: "/portfolio/things/IMG_1149.JPG", category: "Things" },
+  { src: "/portfolio/things/IMG_1173.JPG", category: "Things" },
+  { src: "/portfolio/things/Moore-24.jpg", category: "Things" },
+  { src: "/portfolio/things/Moore-45.jpg", category: "Things" },
+  // Pets
+  { src: "/portfolio/Pets/barski-2592.JPG", category: "Pets" },
+  { src: "/portfolio/Pets/barski-2611.JPG", category: "Pets" },
+  { src: "/portfolio/Pets/Boardwalkdoggydock-.jpg", category: "Pets" },
+  { src: "/portfolio/Pets/Boardwalkdoggydock-3518.jpg", category: "Pets" },
+  { src: "/portfolio/Pets/IMG_4678.jpg", category: "Pets" },
+  { src: "/portfolio/Pets/IMG_6854.JPG", category: "Pets" },
 ];
+
+function shuffle<T>(arr: T[]): T[] {
+  const shuffled = [...arr];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
 
 export default function Portfolio() {
   const [active, setActive] = useState("All");
   const [lightbox, setLightbox] = useState<string | null>(null);
+  const [shuffled, setShuffled] = useState(images);
+  const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    setShuffled(shuffle(images));
+  }, []);
 
   const filtered =
-    active === "All" ? images : images.filter((img) => img.category === active);
+    active === "All" ? shuffled : shuffled.filter((img) => img.category === active);
+  const visible = active === "All" && !showAll ? filtered.slice(0, 12) : filtered;
 
   return (
     <SectionWrapper id="work" className="px-6 py-10 md:py-12">
@@ -102,7 +94,7 @@ export default function Portfolio() {
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setActive(cat)}
+              onClick={() => { setActive(cat); setShowAll(false); }}
               className={`px-5 py-2 text-sm tracking-wide transition-all ${
                 active === cat
                   ? "bg-foreground text-white"
@@ -115,13 +107,12 @@ export default function Portfolio() {
         </div>
 
         {/* Image grid */}
-        <div className="mt-14 grid grid-cols-3 gap-1 sm:gap-2">
-            {filtered.map((img, i) => (
+        <div key={active} className="mt-14 grid grid-cols-3 gap-1 sm:gap-2">
+            {visible.map((img, i) => (
               <motion.div
                 key={img.src}
                 initial={{ opacity: 0, scale: 0.95 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
+                animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4, delay: i % 3 * 0.1 }}
                 className="relative aspect-[3/4] cursor-pointer overflow-hidden"
                 onClick={() => setLightbox(img.src)}
@@ -136,6 +127,17 @@ export default function Portfolio() {
               </motion.div>
             ))}
         </div>
+
+        {active === "All" && !showAll && filtered.length > 12 && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={() => setShowAll(true)}
+              className="px-8 py-3 text-sm tracking-widest uppercase border border-border text-muted transition-colors hover:bg-foreground hover:text-white"
+            >
+              Load More
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Lightbox */}
