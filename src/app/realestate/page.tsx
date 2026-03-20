@@ -86,6 +86,7 @@ function FadeIn({ children, className = "" }: { children: React.ReactNode; class
 
 export default function RealEstatePage() {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -377,11 +378,18 @@ export default function RealEstatePage() {
             {videoTours.map((video) => (
               <FadeIn key={video.src}>
                 <video
+                  ref={(el) => { videoRefs.current[videoTours.indexOf(video)] = el; }}
                   controls
                   playsInline
                   preload="metadata"
                   poster={video.poster}
                   className="aspect-video w-full object-cover"
+                  onPlay={(e) => {
+                    const current = e.currentTarget;
+                    videoRefs.current.forEach((v) => {
+                      if (v && v !== current) v.pause();
+                    });
+                  }}
                 >
                   <source src={video.src} type="video/mp4" />
                 </video>

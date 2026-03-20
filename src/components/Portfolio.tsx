@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import SectionWrapper from "./SectionWrapper";
 
 const categories = ["All", "People", "Places", "Things", "Pets"];
@@ -79,6 +80,27 @@ export default function Portfolio() {
     active === "All" ? shuffled : shuffled.filter((img) => img.category === active);
   const visible = active === "All" && !showAll ? filtered.slice(0, 12) : filtered;
 
+  const lightboxIndex = lightbox ? visible.findIndex((img) => img.src === lightbox) : -1;
+
+  const goNext = useCallback(() => {
+    if (lightboxIndex < visible.length - 1) setLightbox(visible[lightboxIndex + 1].src);
+  }, [lightboxIndex, visible]);
+
+  const goPrev = useCallback(() => {
+    if (lightboxIndex > 0) setLightbox(visible[lightboxIndex - 1].src);
+  }, [lightboxIndex, visible]);
+
+  useEffect(() => {
+    if (!lightbox) return;
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightbox(null);
+      if (e.key === "ArrowRight") goNext();
+      if (e.key === "ArrowLeft") goPrev();
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightbox, goNext, goPrev]);
+
   return (
     <SectionWrapper id="work" className="px-6 py-10 md:py-12">
       <div className="mx-auto max-w-7xl">
@@ -150,11 +172,51 @@ export default function Portfolio() {
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
             onClick={() => setLightbox(null)}
           >
+            {/* Close button */}
+            <button
+              onClick={() => setLightbox(null)}
+              className="absolute top-4 right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+              aria-label="Close"
+            >
+              <X size={24} />
+            </button>
+
+            {/* Previous arrow */}
+            {lightboxIndex > 0 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); goPrev(); }}
+                className="absolute left-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                aria-label="Previous"
+              >
+                <ChevronLeft size={24} />
+              </button>
+            )}
+
+            {/* Next arrow */}
+            {lightboxIndex < visible.length - 1 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); goNext(); }}
+                className="absolute right-4 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
+                aria-label="Next"
+              >
+                <ChevronRight size={24} />
+              </button>
+            )}
+
             <motion.div
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              exit={{ scale: 0.9 }}
+              key={lightbox}
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.3}
+              onDragEnd={(_, info) => {
+                if (info.offset.x < -80) goNext();
+                else if (info.offset.x > 80) goPrev();
+              }}
               className="relative max-h-[90vh] max-w-[90vw]"
+              onClick={(e) => e.stopPropagation()}
             >
               <Image
                 src={lightbox}
