@@ -102,7 +102,7 @@ export default function Portfolio() {
   }, [lightbox, goNext, goPrev]);
 
   return (
-    <SectionWrapper id="work" className="px-6 py-[72px] md:py-20">
+    <SectionWrapper id="work" className="px-6 py-20">
       <div className="mx-auto max-w-7xl">
         <h2 className="text-center text-3xl font-light tracking-tight md:text-4xl">
           Selected Work
