@@ -400,7 +400,7 @@ export default function RealEstatePage() {
       </section>
 
       {/* CTA / Book */}
-      <section id="book" className="scroll-mt-[88px] border-t border-border px-6 pt-6 pb-20">
+      <section id="book" className="scroll-mt-[60px] border-t border-border px-6 pt-6 pb-20">
         <div className="mx-auto max-w-2xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-light tracking-tight md:text-4xl">
