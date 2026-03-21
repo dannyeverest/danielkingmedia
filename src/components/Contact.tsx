@@ -37,7 +37,7 @@ export default function Contact() {
   return (
     <SectionWrapper
       id="contact"
-      className="border-t border-border px-6 py-16 md:py-20"
+      className="border-t border-border px-6 py-[72px] md:py-20"
     >
       <div className="mx-auto max-w-4xl">
         <h2 className="text-center text-3xl font-light tracking-tight md:text-4xl">
