@@ -38,7 +38,7 @@ export default function About() {
   return (
     <SectionWrapper
       id="about"
-      className="border-t border-border px-6 py-20"
+      className="border-t border-border px-6 pt-6 pb-20"
     >
       <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2 md:gap-20">
         {/* Photo — face background with camera overlay, parallax */}
