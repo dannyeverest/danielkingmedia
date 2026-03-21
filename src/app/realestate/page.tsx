@@ -233,7 +233,7 @@ export default function RealEstatePage() {
       <LogoBar />
 
       {/* Services */}
-      <section className="px-6 py-24 md:py-32">
+      <section className="px-6 pt-6 pb-20">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-light tracking-tight md:text-4xl">
@@ -322,7 +322,7 @@ export default function RealEstatePage() {
       </section>
 
       {/* Gallery */}
-      <section id="gallery" className="border-t border-border bg-gray-50 px-6 py-24 md:py-32">
+      <section id="gallery" className="border-t border-border bg-gray-50 px-6 pt-6 pb-20">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-light tracking-tight md:text-4xl">
@@ -363,7 +363,7 @@ export default function RealEstatePage() {
       </section>
 
       {/* Video Tours */}
-      <section className="px-6 py-24 md:py-32">
+      <section className="px-6 pt-6 pb-20">
         <div className="mx-auto max-w-6xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-light tracking-tight md:text-4xl">
@@ -400,7 +400,7 @@ export default function RealEstatePage() {
       </section>
 
       {/* CTA / Book */}
-      <section id="book" className="border-t border-border px-6 py-24 md:py-32">
+      <section id="book" className="border-t border-border px-6 pt-6 pb-20">
         <div className="mx-auto max-w-2xl">
           <FadeIn>
             <h2 className="text-center text-3xl font-light tracking-tight md:text-4xl">
@@ -431,7 +431,7 @@ export default function RealEstatePage() {
                     onChange={(e) => setFormWebsite(e.target.value)}
                   />
                 </div>
-                <div className="grid gap-5 sm:grid-cols-2">
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-1 sm:gap-5">
                   <input
                     type="text"
                     placeholder="Name"
@@ -441,20 +441,20 @@ export default function RealEstatePage() {
                     onChange={(e) => setFormName(e.target.value)}
                   />
                   <input
-                    type="tel"
-                    placeholder="Phone"
+                    type="email"
+                    placeholder="Email (optional)"
                     className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-                    required
-                    value={formPhone}
-                    onChange={(e) => setFormPhone(e.target.value)}
+                    value={formEmail}
+                    onChange={(e) => setFormEmail(e.target.value)}
                   />
                 </div>
                 <input
-                  type="email"
-                  placeholder="Email (optional)"
+                  type="tel"
+                  placeholder="Phone"
                   className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-                  value={formEmail}
-                  onChange={(e) => setFormEmail(e.target.value)}
+                  required
+                  value={formPhone}
+                  onChange={(e) => setFormPhone(e.target.value)}
                 />
                 <input
                   type="text"

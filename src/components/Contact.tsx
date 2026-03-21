@@ -68,7 +68,7 @@ export default function Contact() {
                   onChange={(e) => setWebsite(e.target.value)}
                 />
               </div>
-              <div>
+              <div className="grid grid-cols-2 gap-3 md:grid-cols-1">
                 <input
                   type="text"
                   placeholder="Name"
@@ -76,6 +76,13 @@ export default function Contact() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                />
+                <input
+                  type="email"
+                  placeholder="Email (optional)"
+                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div>
@@ -86,15 +93,6 @@ export default function Contact() {
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email (optional)"
-                  className="w-full border border-border bg-transparent px-4 py-3 text-base outline-none transition-colors focus:border-foreground"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
               <div>
